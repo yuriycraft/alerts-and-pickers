@@ -26,13 +26,13 @@ extension UIAlertController {
 
 
 
-final class TelegramPickerViewController: UIViewController {
+ class TelegramPickerViewController: UIViewController {
     
     
     
     var buttons: [ButtonType] {
         return selectedAssets.count == 0
-            ? [.photoOrVideo, .location, .contact]
+            ? [.photoOrVideo]
             : [.sendPhotos]
     }
     
@@ -99,7 +99,7 @@ final class TelegramPickerViewController: UIViewController {
     fileprivate lazy var collectionView: UICollectionView = { [unowned self] in
         $0.dataSource = self
         $0.delegate = self
-        $0.allowsMultipleSelection = true
+        $0.allowsMultipleSelection = false
         $0.showsVerticalScrollIndicator = false
         $0.showsHorizontalScrollIndicator = false
         $0.decelerationRate = UIScrollView.DecelerationRate.fast
@@ -213,7 +213,7 @@ final class TelegramPickerViewController: UIViewController {
                 self.checkStatus(completionHandler: completionHandler)
             }
             
-        case .authorized:
+        case .authorized, .limited:
             /// Authorization granted by user for this app.
             DispatchQueue.main.async {
                 self.fetchPhotos(completionHandler: completionHandler)
